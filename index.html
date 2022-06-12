@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GENERATORS</title>
+</head>
+
+<body>
+    <script>
+
+        function fibonacci(num) {
+            if (checkNatural(num)) {
+
+                function* generator() {
+                    let num1 = 1;
+                    let num2 = 1;
+
+                    for (let i = 2; i <= num; i++) {
+                        let current = num2;
+                        num2 = num1;
+                        num1 = num2 + current;
+                        yield current;
+                    }
+                }
+
+                return [0, ...generator()];
+            }
+        }
+
+        function cache(fn) {
+            const cache = new Map();
+            return function (...args) {
+                let fnArgs = args.join();
+                if (!cache.has(fnArgs)) {
+                    cache.set(fnArgs, fn(...args));
+                }
+                return cache.get(fnArgs);
+            }
+        }
+
+        function checkNatural(num) {
+            let іsNatural = num > 0 && Number.isInteger(num);
+            return іsNatural;
+        }
+
+        let decFibonacci = cache(fibonacci);
+        console.log(decFibonacci(5));
+
+    </script>
+
+</body>
+
+</html>
